@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+        .btn-warning:hover {
+            background: #d97706;
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #059669;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .result.success {
+            background: #d1fae5;
+            color: #065f46;
+            display: block;
+        }
+        .result.error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background: #f8f9fa;
+            color: #333;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .user-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👥 Gestión de Usuarios</h1>
+        
+        <div class="card">
+            <h2>➕ Crear Usuario</h2>
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="createNombre" placeholder="Ingresa el nombre">
+            </div>
+            <div class="form-group">
+                <label>Correo Electrónico:</label>
+                <input type="email" id="createCorreo" placeholder="Ingresa el correo">
+            </div>
+            <div class="form-group">
+                <label>Dirección:</label>
+                <input type="text" id="createDireccion" placeholder="Ingresa la dirección">
+            </div>
+            <div class="form-group">
+                <label>Contraseña:</label>
+                <input type="password" id="createContrasena" placeholder="Ingresa la contraseña">
+            </div>
+            <button class="btn btn-primary" onclick="crearUsuario()">Crear Usuario</button>
+            <div id="createResult" class="result"></div>
+        </div>
+
+        <div class="card">
+            <h2>🔍 Buscar Usuario</h2>
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="obtenerTodos()">Ver Todos</button>
+                <button class="btn btn-primary" onclick="buscarPorNombre()">Buscar por Nombre</button>
+            </div>
+            <input type="text" id="buscarNombre" placeholder="Ingresa el nombre a buscar" style="margin-top: 15px;">
+            <div id="searchResult" class="result"></div>
+        </div>
+
+        <div class="card">
+            <h2>✏️ Actualizar Usuario</h2>
+            <div class="form-group">
+                <label>ID del Usuario:</label>
+                <input type="number" id="updateId" placeholder="Ingresa el ID">
+            </div>
+            <div class="form-group">
+                <label>Nuevo Nombre:</label>
+                <input type="text" id="updateNombre" placeholder="Nuevo nombre">
+            </div>
+            <div class="form-group">
+                <label>Nuevo Correo:</label>
+                <input type="email" id="updateCorreo" placeholder="Nuevo correo">
+            </div>
+            <div class="form-group">
+                <label>Nueva Dirección:</label>
+                <input type="text" id="updateDireccion" placeholder="Nueva dirección">
+            </div>
+            <div class="form-group">
+                <label>Nueva Contraseña:</label>
+                <input type="password" id="updateContrasena" placeholder="Nueva contraseña">
+            </div>
+            <button class="btn btn-warning" onclick="actualizarUsuario()">Actualizar Usuario</button>
+            <div id="updateResult" class="result"></div>
+        </div>
+
+        <div class="card">
+            <h2>🗑️ Eliminar Usuario</h2>
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="deleteNombre" placeholder="Nombre del usuario">
+            </div>
+            <div class="form-group">
+                <label>Contraseña:</label>
+                <input type="password" id="deleteContrasena" placeholder="Contraseña del usuario">
+            </div>
+            <button class="btn btn-danger" onclick="eliminarUsuario()">Eliminar Usuario</button>
+            <div id="deleteResult" class="result"></div>
+        </div>
+
+        <div class="card">
+            <h2>✓ Validar Usuario</h2>
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="validarNombre" placeholder="Nombre de usuario">
+            </div>
+            <div class="form-group">
+                <label>Contraseña:</label>
+                <input type="password" id="validarContrasena" placeholder="Contraseña">
+            </div>
+            <button class="btn btn-success" onclick="validarUsuario()">Validar</button>
+            <div id="validarResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8702/usuarios';
+
+        async function crearUsuario() {
+            const data = {
+                nombre: document.getElementById('createNombre').value,
+                correo_electronico: document.getElementById('createCorreo').value,
+                direccion: document.getElementById('createDireccion').value,
+                contrasena: document.getElementById('createContrasena').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/registrar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.text();
+                showResult('createResult', result, response.ok);
+                if (response.ok) {
+                    document.getElementById('createNombre').value = '';
+                    document.getElementById('createCorreo').value = '';
+                    document.getElementById('createDireccion').value = '';
+                    document.getElementById('createContrasena').value = '';
+                }
+            } catch (error) {
+                showResult('createResult', 'Error: ' + error.message, false);
+            }
+        }
+
+        async function obtenerTodos() {
+            try {
+                const response = await fetch(`${API_URL}/validar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nombre: '', contrasena: '' })
+                });
+                
+                if (!response.ok) {
+                    const result = await response.text();
+                    showResult('searchResult', 'Error al obtener usuarios: ' + result, false);
+                    return;
+                }
+                
+                const text = await response.text();
+                showResult('searchResult', 'Conexión exitosa con el servidor', true);
+            } catch (error) {
+                showResult('searchResult', 'Error: ' + error.message, false);
+            }
+        }
+
+        async function buscarPorNombre() {
+            const nombre = document.getElementById('buscarNombre').value;
+            if (!nombre) {
+                showResult('searchResult', 'Por favor ingresa un nombre', false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/info/nombre/?nombre=${encodeURIComponent(nombre)}`);
+                const result = await response.text();
+                showResult('searchResult', result, response.ok);
+            } catch (error) {
+                showResult('searchResult', 'Error: ' + error.message, false);
+            }
+        }
+
+        async function actualizarUsuario() {
+            const data = {
+                id: parseInt(document.getElementById('updateId').value),
+                nombre: document.getElementById('updateNombre').value,
+                correo_electronico: document.getElementById('updateCorreo').value,
+                direccion: document.getElementById('updateDireccion').value,
+                contrasena: document.getElementById('updateContrasena').value
+            };
+
+            if (!data.id || !data.nombre) {
+                showResult('updateResult', 'ID y Nombre son requeridos', false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/registrar`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.text();
+                showResult('updateResult', result, response.ok);
+            } catch (error) {
+                showResult('updateResult', 'Error: ' + error.message, false);
+            }
+        }
+
+        async function eliminarUsuario() {
+            const data = {
+                nombre: document.getElementById('deleteNombre').value,
+                contrasena: document.getElementById('deleteContrasena').value
+            };
+
+            if (!data.nombre || !data.contrasena) {
+                showResult('deleteResult', 'Nombre y contraseña son requeridos', false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.text();
+                showResult('deleteResult', result, response.ok);
+                if (response.ok) {
+                    document.getElementById('deleteNombre').value = '';
+                    document.getElementById('deleteContrasena').value = '';
+                }
+            } catch (error) {
+                showResult('deleteResult', 'Error: ' + error.message, false);
+            }
+        }
+
+        async function validarUsuario() {
+            const data = {
+                nombre: document.getElementById('validarNombre').value,
+                contrasena: document.getElementById('validarContrasena').value
+            };
+
+            if (!data.nombre || !data.contrasena) {
+                showResult('validarResult', 'Nombre y contraseña son requeridos', false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/validar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.text();
+                showResult('validarResult', result, result.includes('válido') || result.includes('correcto'));
+            } catch (error) {
+                showResult('validarResult', 'Error: ' + error.message, false);
+            }
+        }
+
+        function showResult(elementId, message, isSuccess) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = 'result ' + (isSuccess ? 'success' : 'error');
+        }
+    </script>
+</body>
+</html>
