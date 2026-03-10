@@ -1,0 +1,71 @@
+type Mutation {
+    crearComentario(comentarioDTO: CrearComentarioInput): CrearComentarioDTO,
+    eliminarComentarios : String,
+    eliminarComentarioDTO(eliminarComentarioDTO :EliminarComentarioDTO):String
+}
+type Query {
+    listarComentariosHotel(listarComentariosHotelDTO: ListarComentariosHotelInput): [ListarComentariosHotel],
+    listarComentariosUsuario(userPassDTO: UserPassDTOInput):[ListarComentariosHotel],
+    mostrarComentarioUsuarioReserva(mostrarComentarioReservaDTO: MostrarComentarioReservaDTO): [ListarComentariosHotel],
+    puntuacionMediaHotel(obtenerHotelDTO: ObtenerHotelDTO): Float,
+    puntuacionesMediasUsuario(userPassDTO:UserPassDTOInput): Float
+}
+
+input UserPassDTOInput {
+    nombre: String!,
+    contrasena: String!
+}
+input ListarComentariosHotelInput  {
+    nombre: String!
+    contrasena: String!
+    nombreHotel: String!
+}
+
+input MostrarComentarioReservaDTO {
+    nombre: String,
+    contrasena: String,
+    reservaId: Int
+}
+type ListarComentariosHotel {
+    nombreHotel: String,
+    reservaId: String,
+    puntuacion: Float,
+    comentario: String
+}
+
+type CrearComentarioDTO {
+    nombreUsuario: String
+    contrasena: String
+    nombreHotel: String
+    reservaId: Int
+    puntuacion: Float
+    comentario: String
+}
+
+type Comentarios {
+    _id: String
+    usuarioId: Int
+    hotelId: Int
+    reservaId: Float
+    comentario: String
+    fechaCreacion: String
+}
+input CrearComentarioInput {
+    nombreHotel: String!
+    nombreUsuario: String!
+    contrasena: String!
+    reservaId: Int!
+    comentario: String!
+    puntuacion: Int!
+}
+input EliminarComentarioDTO {
+    nombre: String,
+    contrasena: String,
+    id:String
+}
+
+input ObtenerHotelDTO {
+    nombreHotel: String
+    nombre: String
+    contrasena: String
+}
