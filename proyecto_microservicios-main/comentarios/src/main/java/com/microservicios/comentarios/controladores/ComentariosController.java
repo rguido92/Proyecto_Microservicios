@@ -32,8 +32,12 @@ public class ComentariosController {
         }
     }
     @MutationMapping
-    public String eliminarComentarios(){
-        return comentariosService.eliminarComentarios();
+    public String eliminarComentarios(@Argument UserPassDTO userPassDTO){
+        if (comentariosService.validarUsuario(userPassDTO)) {
+            return comentariosService.eliminarComentarios();
+        } else {
+            return "Error al autenticarse";
+        }
     }
 
 

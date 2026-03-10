@@ -4,6 +4,7 @@ import com.microservicios.comentarios.dto.*;
 import com.microservicios.comentarios.entidades.Comentario;
 import com.microservicios.comentarios.repositorios.IComentariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,14 @@ public class ComentariosService {
     @Autowired
     private final IComentariosRepository iComentariosRepository;
 
+    @Autowired
     private RestTemplate restTemplate;
+
+    @Value("${usuarios.service.url:http://localhost:8702}")
+    private String usuariosServiceUrl;
+
+    @Value("${reservas.service.url:http://localhost:8701}")
+    private String reservasServiceUrl;
 
     public ComentariosService(IComentariosRepository iComentariosRepository) {
         this.iComentariosRepository = iComentariosRepository;
@@ -86,8 +94,7 @@ public class ComentariosService {
     }
 
     public int obtenerIdUsuario(String nombre) {
-        restTemplate = new RestTemplate();
-        String url = "http://localhost:8702/usuarios/info/nombre/?nombre=" + nombre;
+        String url = usuariosServiceUrl + "/usuarios/info/nombre/?nombre=" + nombre;
         try {
             ResponseEntity<Integer> response = restTemplate.exchange(url, HttpMethod.GET, null, Integer.class);
             if (response.getBody() != null) {
@@ -110,8 +117,7 @@ public class ComentariosService {
     }
 
     public boolean existeReserva(int reservaId, int usuarioId, int hotelId) {
-        restTemplate = new RestTemplate();
-        String url = String.format("http://localhost:8701/reservas/check?idUsuario=%d&idReserva=%d&idHotel=%d", usuarioId, reservaId, hotelId);
+        String url = String.format(reservasServiceUrl + "/reservas/check?idUsuario=%d&idReserva=%d&idHotel=%d", usuarioId, reservaId, hotelId);
         try {
             ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
             if (response.getStatusCode().is2xxSuccessful()) {
@@ -125,15 +131,13 @@ public class ComentariosService {
     }
 
     public boolean validarUsuario(UserPassDTO userPassDTO) {
-        restTemplate = new RestTemplate();
-        String url = "http://localhost:8702/usuarios/validar";
+        String url = usuariosServiceUrl + "/usuarios/validar";
         ResponseEntity<Boolean> response = restTemplate.postForEntity(url, userPassDTO, Boolean.class);
         return Boolean.TRUE.equals(response.getBody());
     }
 
     private int obtenerIdHotel(String nombreHotel) {
-        restTemplate = new RestTemplate();
-        String url = "http://localhost:8701/hotel/id?nombre=" + nombreHotel;
+        String url = reservasServiceUrl + "/reservas/hotel/id?nombre=" + nombreHotel;
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(url, null, String.class);
             if (response.getStatusCode().is2xxSuccessful()) {
@@ -167,8 +171,7 @@ public class ComentariosService {
 
     }
     public String obtenerNombreApartirId(UserPassDTO usuarioContrasenhaDTO,Integer idHotel){
-        RestTemplate restTemplate = new RestTemplate();
-        String url =  "http://localhost:8701/reservas/hotel/nombre/{idHotel}";
+        String url = reservasServiceUrl + "/reservas/hotel/nombre/{idHotel}";
 
         Map<String, Integer> uriVariables = new HashMap<>();
         uriVariables.put("idHotel", idHotel);
@@ -181,8 +184,7 @@ public class ComentariosService {
 
     }
     public Integer obtenerIdApartirNombre(String nombreHotel, UserPassDTO userPassDTO) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8701/hotel/id";
+        String url = reservasServiceUrl + "/reservas/hotel/id";
 
         // Crear un objeto MultiValueMap para enviar parámetros en el cuerpo de la solicitud POST
         MultiValueMap<String, String> uriVariables = new LinkedMultiValueMap<>();

@@ -59,8 +59,9 @@ public class UsuarioController {
      * @param usuarioDTO
      * @return
      */
-    @PutMapping("/registrar")
-    public ResponseEntity<String> actualizarUsuario(@RequestBody ActualizarUsuarioDTO usuarioDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<String> actualizarUsuario(@PathVariable int id, @RequestBody ActualizarUsuarioDTO usuarioDTO) {
+         usuarioDTO.setId(id);
          return   usuarioService.actualizarUsuario(usuarioDTO);
 
     }

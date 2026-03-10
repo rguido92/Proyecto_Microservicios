@@ -16,11 +16,10 @@ public class Usuario {
     @Column(name = "usuario_id")
     private int usuario_id;
 
-    public static String prueba;
-    @Column(length = 10,name = "nombre")
+    @Column(length = 50,name = "nombre")
     private String nombre;
 
-    @Column(length = 80)
+    @Column(length = 80, unique = true)
     private String correo_electronico;
 
     @Column(length = 80)

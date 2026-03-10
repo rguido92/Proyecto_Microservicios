@@ -8,6 +8,7 @@ import com.microservicios.usuarios.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,9 @@ public class UsuarioService {
     @Autowired
     private IUserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public ResponseEntity<String> saveUser(UsuarioDTO usuarioDTO) {
         if (userRepository.findByNombre(usuarioDTO.getNombre())==null){
@@ -26,7 +30,7 @@ public class UsuarioService {
             usuario.setNombre(usuarioDTO.getNombre());
             usuario.setCorreo_electronico(usuarioDTO.getCorreo_electronico());
             usuario.setDireccion(usuarioDTO.getDireccion());
-            usuario.setContrasena(usuarioDTO.getContrasena());
+            usuario.setContrasena(passwordEncoder.encode(usuarioDTO.getContrasena()));
             userRepository.save(usuario);
             return ResponseEntity.status(HttpStatus.CREATED).body("usuario guardado");
         }else  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("usuario duplicado");
@@ -35,8 +39,8 @@ public class UsuarioService {
 
     @Transactional
     public String deleteUser(UsuarioDTO usuarioDTO) {
-        Usuario usuario = userRepository.findByNombreAndContrasena(usuarioDTO.getNombre(), usuarioDTO.getContrasena());
-        if (usuario != null) {
+        Usuario usuario = userRepository.findByNombre(usuarioDTO.getNombre());
+        if (usuario != null && passwordEncoder.matches(usuarioDTO.getContrasena(), usuario.getContrasena())) {
             userRepository.delete(usuario);
             return "Usuario eliminado correctamente";
         }
@@ -53,7 +57,6 @@ public class UsuarioService {
 
     public int findByNombre(String nombre) {
         Usuario usuario = userRepository.findByNombre(nombre);
-        System.out.println(usuario.getUsuario_id());
         if (usuario != null) {
             return usuario.getUsuario_id();
         }
@@ -70,18 +73,19 @@ public class UsuarioService {
     }
 
     public Boolean findByNombreAndContrasena(String nombre, String contrasena) {
-        Usuario usuario = userRepository.findByNombreAndContrasena(nombre, contrasena);
+        Usuario usuario = userRepository.findByNombre(nombre);
         if (usuario != null) {
-            return true;
+            return passwordEncoder.matches(contrasena, usuario.getContrasena());
         }
         return false;
     }
 
-
-
     public UsuarioDTO getByNombreAndContrasena(String nombre, String contrasena) {
-        Usuario usuario = userRepository.findByNombreAndContrasena(nombre, contrasena);
-        return new UsuarioDTO(usuario);
+        Usuario usuario = userRepository.findByNombre(nombre);
+        if (usuario != null && passwordEncoder.matches(contrasena, usuario.getContrasena())) {
+            return new UsuarioDTO(usuario);
+        }
+        return null;
     }
 
     @Transactional
@@ -92,7 +96,7 @@ public class UsuarioService {
                 user.setNombre(usuarioDTO.getNombre());
                 user.setCorreo_electronico(usuarioDTO.getCorreo_electronico());
                 user.setDireccion(usuarioDTO.getDireccion());
-                user.setContrasena(usuarioDTO.getContrasena());
+                user.setContrasena(passwordEncoder.encode(usuarioDTO.getContrasena()));
                 userRepository.save(user);
                 return ResponseEntity.status(HttpStatus.CREATED).body("usuario actualizado");
             } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("usuario no encontrado");

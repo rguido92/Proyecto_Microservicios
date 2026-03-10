@@ -6,9 +6,9 @@ import com.microservicios.reservas.models.Reserva;
 import com.microservicios.reservas.repositories.IHotelRepository;
 import com.microservicios.reservas.repositories.IReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,10 +28,18 @@ public class ReservaService {
     @Autowired
     private IHotelRepository iHotelRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${usuarios.service.url:http://localhost:8702}")
+    private String usuariosServiceUrl;
+
+    @Value("${reservas.service.url:http://localhost:8701}")
+    private String reservasServiceUrl;
+
 
     public boolean comprobarContrasena(String nombre, String contrasena) {
-        RestTemplate restTemplate = new RestTemplate();
-        String urlValidarContrasena = "http://localhost:8702/usuarios/validar";
+        String urlValidarContrasena = usuariosServiceUrl + "/usuarios/validar";
 
         CrearReservaDTO crearReservaDTO = new CrearReservaDTO();
         crearReservaDTO.setNombre(nombre);
@@ -128,23 +136,20 @@ public class ReservaService {
 
 
     public int obtenerIdUsuario(String nombre) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8702/usuarios/info/nombre/?nombre=" + nombre;
+        String url = usuariosServiceUrl + "/usuarios/info/nombre/?nombre=" + nombre;
         try {
-            //  GET al UsuarioService: respuesta como Integer
             ResponseEntity<Integer> response = restTemplate.exchange(url, HttpMethod.GET, null, Integer.class);
             if (response.getBody() != null) {
-                // Obtener el ID del usuario de la respuesta
                 int usuarioId = response.getBody();
                 System.out.println("ID del usuario obtenido correctamente: " + usuarioId);
                 return usuarioId;
             } else {
                 System.err.println("Error: Respuesta no exitosa o cuerpo de respuesta nulo");
-                return 0; // Otra opción es lanzar una excepción si lo prefieres
+                return 0;
             }
         } catch (Exception e) {
             System.err.println("Error al realizar la solicitud al servicio de usuarios: " + e.getMessage());
-            return 0; // Otra opción es lanzar una excepción si lo prefieres
+            return 0;
         }
     }
 

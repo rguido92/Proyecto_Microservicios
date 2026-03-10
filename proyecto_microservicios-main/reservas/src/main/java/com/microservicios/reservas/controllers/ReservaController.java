@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +55,12 @@ public class ReservaController {
      * @param validarUsuarioDTO
      * @return
      */
-    @GetMapping()
+    @PostMapping()
     public ResponseEntity<List<ListarReservasDTO>> listarReservasUsuario(@RequestBody ValidarUsuarioDTO validarUsuarioDTO) {
         List<ListarReservasDTO> reservas = reservaService.listarReserva(validarUsuarioDTO);
+        if (reservas == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
+        }
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(reservas);
     }
 
@@ -71,7 +75,7 @@ public class ReservaController {
         if (reservaService.comprobarContrasena(validarUsuarioDTO.getNombre(), validarUsuarioDTO.getContrasena())) {
             List<ListarReservasDTO> reservas = reservaService.findbyEstado(estado);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(reservas);
-        } else return null;
+        } else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
     }
 
     /**
