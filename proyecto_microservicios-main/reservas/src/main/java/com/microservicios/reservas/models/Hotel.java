@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int hotel_id;
+    @Column(name = "hotel_id")
+    private int hotelId;
     private String nombre;
     private String direccion;
 }

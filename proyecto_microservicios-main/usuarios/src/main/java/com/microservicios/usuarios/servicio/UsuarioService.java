@@ -21,7 +21,8 @@ public class UsuarioService {
     public ResponseEntity<String> saveUser(UsuarioDTO usuarioDTO) {
         // Convertir UsuarioDTO a Usuario antes de guardar
         if (userRepository.findByNombre(usuarioDTO.getNombre())==null){
-            Usuario usuario = new Usuario(usuarioDTO.getNombre(), usuarioDTO.getCorreo_electronico(), usuarioDTO.getDireccion(), usuarioDTO.getContrasena());
+            String rol = usuarioDTO.getRol() == null || usuarioDTO.getRol().isBlank() ? "USER" : usuarioDTO.getRol().toUpperCase();
+            Usuario usuario = new Usuario(usuarioDTO.getNombre(), usuarioDTO.getCorreo_electronico(), usuarioDTO.getDireccion(), usuarioDTO.getContrasena(), rol);
             userRepository.save(usuario);
             return ResponseEntity.status(HttpStatus.CREATED).body("usuario guardado");
         }else  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("usuario duplicado");
@@ -78,6 +79,17 @@ public class UsuarioService {
 
     public UsuarioDTO getByNombreAndContrasena(String nombre, String contrasena) {
         Usuario usuario = userRepository.findByNombreAndContrasena(nombre, contrasena);
+        if (usuario == null) {
+            return null;
+        }
+        return new UsuarioDTO(usuario);
+    }
+
+    public UsuarioDTO login(String nombre, String contrasena) {
+        Usuario usuario = userRepository.findByNombreAndContrasena(nombre, contrasena);
+        if (usuario == null) {
+            return null;
+        }
         return new UsuarioDTO(usuario);
     }
 
@@ -88,6 +100,9 @@ public class UsuarioService {
             user.setCorreo_electronico(usuarioDTO.getCorreo_electronico());
             user.setDireccion(usuarioDTO.getDireccion());
             user.setContrasena(usuarioDTO.getContrasena());
+            if (usuarioDTO.getRol() != null && !usuarioDTO.getRol().isBlank()) {
+                user.setRol(usuarioDTO.getRol().toUpperCase());
+            }
             userRepository.save(user);
            return ResponseEntity.status(HttpStatus.CREATED).body("usuario actualizado");
         } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("usuario no actualizado");

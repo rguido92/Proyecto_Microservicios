@@ -32,5 +32,8 @@ public class Usuario {
     @Column(length = 100)
     private String contrasena;
 
+    @NonNull
+    @Column(length = 20)
+    private String rol;
 
 }

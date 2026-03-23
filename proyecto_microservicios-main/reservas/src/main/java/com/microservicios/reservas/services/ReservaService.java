@@ -6,6 +6,7 @@ import com.microservicios.reservas.models.Reserva;
 import com.microservicios.reservas.repositories.IHotelRepository;
 import com.microservicios.reservas.repositories.IReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ import java.util.List;
 
 @Service
 public class ReservaService {
+    @Value("${usuarios.service.url:http://localhost:8702}")
+    private String usuariosServiceUrl;
+
 
     @Autowired
     private IReservaRepository reservaRepository;
@@ -31,7 +35,7 @@ public class ReservaService {
 
     public boolean comprobarContrasena(String nombre, String contrasena) {
         RestTemplate restTemplate = new RestTemplate();
-        String urlValidarContrasena = "http://localhost:8702/usuarios/validar";
+        String urlValidarContrasena = usuariosServiceUrl + "/usuarios/validar";
 
         CrearReservaDTO crearReservaDTO = new CrearReservaDTO();
         crearReservaDTO.setNombre(nombre);
@@ -129,7 +133,7 @@ public class ReservaService {
 
     public int obtenerIdUsuario(String nombre) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8702/usuarios/info/nombre/?nombre=" + nombre;
+        String url = usuariosServiceUrl + "/usuarios/info/nombre/?nombre=" + nombre;
         try {
             //  GET al UsuarioService: respuesta como Integer
             ResponseEntity<Integer> response = restTemplate.exchange(url, HttpMethod.GET, null, Integer.class);

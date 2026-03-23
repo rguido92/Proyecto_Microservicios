@@ -27,8 +27,9 @@ input MostrarComentarioReservaDTO {
     reservaId: Int
 }
 type ListarComentariosHotel {
+    id: String,
     nombreHotel: String,
-    reservaId: String,
+    reservaId: Int,
     puntuacion: Float,
     comentario: String
 }

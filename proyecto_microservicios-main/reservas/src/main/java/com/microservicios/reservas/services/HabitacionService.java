@@ -10,6 +10,7 @@ import com.microservicios.reservas.models.Reserva;
 import com.microservicios.reservas.repositories.IHabitacionRepository;
 import com.microservicios.reservas.repositories.IHotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,8 +18,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 public class HabitacionService {
+    @Value("${usuarios.service.url:http://localhost:8702}")
+    private String usuariosServiceUrl;
+
     @Autowired
     private IHabitacionRepository habitacionRepository;
     @Autowired
@@ -26,7 +32,7 @@ public class HabitacionService {
 
     public boolean comprobarContrasena(String nombre, String contrasena) {
         RestTemplate restTemplate = new RestTemplate();
-        String urlValidarContrasena = "http://localhost:8702/usuarios/validar";
+        String urlValidarContrasena = usuariosServiceUrl + "/usuarios/validar";
 
         CrearReservaDTO crearReservaDTO = new CrearReservaDTO();
         crearReservaDTO.setNombre(nombre);
@@ -46,7 +52,7 @@ public class HabitacionService {
     public String crearHabitacion(CrearHabitacionDTO habitacionDTO) {
         if (comprobarContrasena(habitacionDTO.getNombre(), habitacionDTO.getContraseña())) {
             Habitacion habitacion = new Habitacion();
-            habitacion.setHotel(hotelRepository.findById(habitacionDTO.getHotel_id()).orElse(null));
+            habitacion.setHotel(hotelRepository.findById(habitacionDTO.getHotelId()).orElse(null));
             habitacion.setTipo(habitacionDTO.getTipo());
             habitacion.setNumero_habitacion(habitacionDTO.getNumero_habitacion());
             habitacion.setDisponible(true);
@@ -61,7 +67,7 @@ public class HabitacionService {
         if (comprobarContrasena(habitacionDTO.getNombre(), habitacionDTO.getContraseña())) {
 
             Habitacion habitacion = habitacionRepository.findById(habitacionDTO.getId());
-            Hotel hotel = hotelRepository.findById(habitacionDTO.getHotel_id()).orElse(null);
+            Hotel hotel = hotelRepository.findById(habitacionDTO.getHotelId()).orElse(null);
             if (habitacion != null && hotel!=null) {
                 habitacion.setHotel(hotel);
                 habitacion.setTipo(habitacionDTO.getTipo());
@@ -91,5 +97,9 @@ public class HabitacionService {
 
     public Habitacion findById(int habitacionId) {
         return habitacionRepository.findById(habitacionId);
+    }
+
+    public List<HabitacionDTO> listarHabitaciones() {
+        return habitacionRepository.findAll().stream().map(HabitacionDTO::new).toList();
     }
 }

@@ -28,6 +28,11 @@ public class UsuarioController {
             return usuarioService.saveUser(usuario);
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
+        return ResponseEntity.ok(usuarioService.findAllUsers());
+    }
+
     /**
      * http://localhost:8702/usuarios/remove?id=4
      * http://localhost:8702/usuarios/?nombre=María López&contrasena=secreto456
@@ -79,6 +84,15 @@ public class UsuarioController {
     public ResponseEntity<Boolean> validarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         boolean validado = usuarioService.findByNombreAndContrasena(usuarioDTO.getNombre(), usuarioDTO.getContrasena());
         return ResponseEntity.ok(validado);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioDTO> login(@RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO usuario = usuarioService.login(usuarioDTO.getNombre(), usuarioDTO.getContrasena());
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(usuario);
     }
 
     // http://localhost:8702/usuarios/info/id/?id=1

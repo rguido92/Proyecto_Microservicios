@@ -18,7 +18,7 @@ public class CrearHabitacionDTO implements Serializable {
     private String contraseña;
 
     private int id;
-    private int hotel_id;
+    private int hotelId;
     private int numero_habitacion;
     @Pattern(regexp = ("Individual|Doble|Triple|Suite"),message = "Debes introducir un tipo de habitacion valido")
 
@@ -28,18 +28,18 @@ public class CrearHabitacionDTO implements Serializable {
     private CrearHabitacionDTO(Habitacion habitacion,String nombre,String contraseña){
         this.nombre= nombre;
         this.contraseña= contraseña;
-        this.hotel_id= habitacion.getHotel().getHotel_id();
+        this.hotelId= habitacion.getHotel().getHotelId();
         this.numero_habitacion= habitacion.getNumero_habitacion();
         this.tipo= habitacion.getTipo();
         this.precio= habitacion.getPrecio();
     }
 
-    public CrearHabitacionDTO(boolean disponible, BigDecimal precio, String tipo, int numero_habitacion, int hotel_id, int id, String contraseña, String nombre) {
+    public CrearHabitacionDTO(boolean disponible, BigDecimal precio, String tipo, int numero_habitacion, int hotelId, int id, String contraseña, String nombre) {
         this.disponible = disponible;
         this.precio = precio;
         this.tipo = tipo;
         this.numero_habitacion = numero_habitacion;
-        this.hotel_id = hotel_id;
+        this.hotelId = hotelId;
         this.id = id;
         this.contraseña = contraseña;
         this.nombre = nombre;

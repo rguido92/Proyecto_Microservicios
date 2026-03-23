@@ -19,16 +19,20 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UsuarioDTO {
 
+    private Integer usuario_id;
     private String nombre;
     private String correo_electronico;
     private String direccion;
     private String contrasena;
+    private String rol;
 
     public UsuarioDTO(Usuario usuario1) {
+        this.usuario_id = usuario1.getUsuario_id();
         this.nombre=usuario1.getNombre();
         this.correo_electronico=usuario1.getCorreo_electronico();
         this.direccion= usuario1.getDireccion();
         this.contrasena= usuario1.getContrasena();
+        this.rol = usuario1.getRol();
     }
     public UsuarioDTO(String nombre ,String contrasena) {
         this.nombre=nombre;

@@ -10,14 +10,14 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 public class HotelDTO implements Serializable {
-    private int hotel_id;
+    private int hotelId;
     private String nombre;
     private String direccion;
     private String usuario;
     private String contrasena;
 
     public HotelDTO(Hotel hotel) {
-        this.hotel_id = hotel.getHotel_id();
+        this.hotelId = hotel.getHotelId();
         this.nombre = hotel.getNombre();
         this.direccion = hotel.getDireccion();
     }
@@ -35,8 +35,8 @@ public class HotelDTO implements Serializable {
         this.direccion = direccion;
     }
 
-    public HotelDTO(int hotel_id,String usuario, String contrasena, String nombre, String direccion) {
-        this.hotel_id = hotel_id;
+    public HotelDTO(int hotelId,String usuario, String contrasena, String nombre, String direccion) {
+        this.hotelId = hotelId;
         this.nombre = nombre;
         this.direccion =direccion;
         this.usuario = usuario;

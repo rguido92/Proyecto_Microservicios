@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("reservas/habitacion")
 public class HabitacionContrller {
@@ -25,6 +27,11 @@ public class HabitacionContrller {
     public ResponseEntity<String> crearHabitacion(@Valid  @RequestBody CrearHabitacionDTO habitacionDTO) {
         String mensaje = habitacionService.crearHabitacion(habitacionDTO);
         return ResponseEntity.ok(mensaje);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<HabitacionDTO>> listarHabitaciones() {
+        return ResponseEntity.ok(habitacionService.listarHabitaciones());
     }
 
     @PatchMapping("")
