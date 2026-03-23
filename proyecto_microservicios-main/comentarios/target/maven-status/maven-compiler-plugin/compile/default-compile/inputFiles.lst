@@ -1,0 +1,12 @@
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\dto\UserPassDTO.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\entidades\Comentario.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\dto\ComentarioDTO.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\dto\CrearComentarioDTO.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\dto\EliminarComentarioDTO.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\dto\ListarComentariosHotelDTO.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\servicios\ComentariosService.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\ComentariosApplication.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\controladores\ComentariosController.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\dto\MostrarComentarioReservaDTO.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\dto\ObtenerHotelDTO.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\comentarios\src\main\java\com\microservicios\comentarios\repositorios\IComentariosRepository.java
