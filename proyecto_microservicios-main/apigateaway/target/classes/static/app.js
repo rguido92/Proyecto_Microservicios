@@ -5,6 +5,11 @@ const sessionKeys = {
   userId: "microservices.session.userId"
 };
 
+const reservationSelectorState = {
+  hotels: [],
+  rooms: []
+};
+
 function getSession() {
   return {
     nombre: localStorage.getItem(sessionKeys.user) || "",
@@ -102,6 +107,123 @@ function renderTable(containerId, rows) {
   container.innerHTML = `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
 }
 
+function createReservationSelect(id, placeholder) {
+  const select = document.createElement("select");
+  select.id = id;
+  select.required = true;
+  select.innerHTML = `<option value="">${placeholder}</option>`;
+  return select;
+}
+
+function populateReservationHotelOptions(select) {
+  select.innerHTML = '<option value="">Selecciona un hotel</option>';
+  reservationSelectorState.hotels.forEach((hotel) => {
+    const option = document.createElement("option");
+    option.value = String(hotel.hotelId);
+    option.textContent = hotel.nombre;
+    select.appendChild(option);
+  });
+}
+
+function populateReservationRoomOptions(select, hotelId, hiddenInput) {
+  select.innerHTML = '<option value="">Selecciona una habitacion disponible</option>';
+  hiddenInput.value = "";
+
+  if (!hotelId) {
+    select.disabled = true;
+    return;
+  }
+
+  const availableRooms = reservationSelectorState.rooms.filter(
+    (room) => String(room.hotelId) === String(hotelId) && room.disponible
+  );
+
+  if (availableRooms.length === 0) {
+    select.disabled = true;
+    select.innerHTML = '<option value="">No hay habitaciones disponibles</option>';
+    return;
+  }
+
+  availableRooms.forEach((room) => {
+    const option = document.createElement("option");
+    option.value = String(room.id);
+    option.textContent = `Habitacion ${room.numero_habitacion} - ${room.tipo} - ${room.precio}`;
+    select.appendChild(option);
+  });
+
+  select.disabled = false;
+}
+
+function decorateReservationForm(formId, hotelSelectId, roomSelectId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+
+  const roomInput = form.querySelector('input[name="habitacion_id"]');
+  if (!roomInput || form.querySelector(`#${hotelSelectId}`)) return;
+
+  roomInput.type = "hidden";
+  roomInput.required = false;
+
+  const hotelSelect = createReservationSelect(hotelSelectId, "Selecciona un hotel");
+  const roomSelect = createReservationSelect(roomSelectId, "Selecciona una habitacion disponible");
+  roomSelect.disabled = true;
+
+  roomInput.parentNode.insertBefore(roomSelect, roomInput);
+  roomInput.parentNode.insertBefore(hotelSelect, roomSelect);
+
+  hotelSelect.addEventListener("change", () => {
+    populateReservationRoomOptions(roomSelect, hotelSelect.value, roomInput);
+  });
+
+  roomSelect.addEventListener("change", () => {
+    roomInput.value = roomSelect.value;
+  });
+}
+
+function refreshReservationSelectors() {
+  [
+    {
+      formId: "admin-create-reservation-form",
+      hotelSelectId: "admin-reservation-hotel",
+      roomSelectId: "admin-reservation-room"
+    },
+    {
+      formId: "user-create-reservation-form",
+      hotelSelectId: "user-reservation-hotel",
+      roomSelectId: "user-reservation-room"
+    }
+  ].forEach(({ formId, hotelSelectId, roomSelectId }) => {
+    decorateReservationForm(formId, hotelSelectId, roomSelectId);
+
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    const hotelSelect = form.querySelector(`#${hotelSelectId}`);
+    const roomSelect = form.querySelector(`#${roomSelectId}`);
+    const roomInput = form.querySelector('input[name="habitacion_id"]');
+    if (!hotelSelect || !roomSelect || !roomInput) return;
+
+    const previousHotel = hotelSelect.value;
+    const previousRoom = roomInput.value;
+
+    populateReservationHotelOptions(hotelSelect);
+
+    if (previousHotel && reservationSelectorState.hotels.some((hotel) => String(hotel.hotelId) === previousHotel)) {
+      hotelSelect.value = previousHotel;
+      populateReservationRoomOptions(roomSelect, previousHotel, roomInput);
+      if (previousRoom) {
+        roomSelect.value = previousRoom;
+        roomInput.value = previousRoom;
+      }
+      return;
+    }
+
+    roomSelect.disabled = true;
+    roomSelect.innerHTML = '<option value="">Selecciona una habitacion disponible</option>';
+    roomInput.value = "";
+  });
+}
+
 function updateCounter(id, value) {
   const el = document.getElementById(id);
   if (el) el.textContent = String(value);
@@ -163,6 +285,10 @@ async function loadHospitality(prefix) {
     request("/reservas/hotel"),
     request("/reservas/habitacion")
   ]);
+
+  reservationSelectorState.hotels = hotels;
+  reservationSelectorState.rooms = rooms;
+  refreshReservationSelectors();
 
   if (prefix === "admin") {
     updateCounter("admin-count-hotels", hotels.length);
@@ -364,7 +490,12 @@ function bindAdminForms() {
     const message = await request("/reservas/hotel", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...values, ...getAuthPayload(), usuario: getSession().nombre })
+      body: JSON.stringify({
+        nombre: values.nombre,
+        direccion: values.direccion,
+        usuario: getSession().nombre,
+        contrasena: getSession().contrasena
+      })
     });
     await loadHospitality("admin");
     form.reset();
@@ -622,6 +753,7 @@ async function restoreSession() {
 }
 
 function bootstrap() {
+  refreshReservationSelectors();
   bindLogin();
   bindButtons();
   bindAdminForms();
