@@ -28,7 +28,7 @@ input MostrarComentarioReservaDTO {
 }
 type ListarComentariosHotel {
     nombreHotel: String,
-    reservaId: String,
+    reservaId: Int,
     puntuacion: Float,
     comentario: String
 }
@@ -46,7 +46,7 @@ type Comentarios {
     _id: String
     usuarioId: Int
     hotelId: Int
-    reservaId: Float
+    reservaId: Int
     comentario: String
     fechaCreacion: String
 }
@@ -56,7 +56,7 @@ input CrearComentarioInput {
     contrasena: String!
     reservaId: Int!
     comentario: String!
-    puntuacion: Int!
+    puntuacion: Float!
 }
 input EliminarComentarioDTO {
     nombre: String,

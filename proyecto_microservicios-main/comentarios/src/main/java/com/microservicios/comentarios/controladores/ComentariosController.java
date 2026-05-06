@@ -2,7 +2,6 @@ package com.microservicios.comentarios.controladores;
 
 import com.microservicios.comentarios.dto.*;
 import com.microservicios.comentarios.servicios.ComentariosService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

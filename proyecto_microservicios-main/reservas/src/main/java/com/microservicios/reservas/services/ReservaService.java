@@ -74,7 +74,7 @@ public class ReservaService {
     public String cambiarEstadoReserva(ReservaCambiarEstadoDTO cambioEstadoReservaDTO) {
         if (comprobarContrasena(cambioEstadoReservaDTO.getNombre(), cambioEstadoReservaDTO.getContrasena())) {
             try {
-                Reserva reserva = reservaRepository.findById(cambioEstadoReservaDTO.getReserva_id());
+                Reserva reserva = reservaRepository.findById(cambioEstadoReservaDTO.getReserva_id()).orElse(null);
                 if (reserva != null) {
                     reserva.setEstado(cambioEstadoReservaDTO.getEstado());
                     reservaRepository.save(reserva);

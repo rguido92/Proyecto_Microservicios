@@ -60,7 +60,7 @@ public class HabitacionService {
     public String actualizarHabitacion(CrearHabitacionDTO habitacionDTO) {
         if (comprobarContrasena(habitacionDTO.getNombre(), habitacionDTO.getContraseña())) {
 
-            Habitacion habitacion = habitacionRepository.findById(habitacionDTO.getId());
+            Habitacion habitacion = habitacionRepository.findById(habitacionDTO.getId()).orElse(null);
             Hotel hotel = hotelRepository.findById(habitacionDTO.getHotel_id()).orElse(null);
             if (habitacion != null && hotel!=null) {
                 habitacion.setHotel(hotel);
@@ -75,7 +75,7 @@ public class HabitacionService {
     }
 
     public String eliminarHabitacion(int id) {
-        Habitacion habitacion = habitacionRepository.findById(id);
+        Habitacion habitacion = habitacionRepository.findById(id).orElse(null);
         if (habitacion!=null){
 
             this.habitacionRepository.delete(habitacion);
@@ -86,10 +86,11 @@ public class HabitacionService {
     }
 
     public HabitacionDTO obtenerHabitacionPorId(int id) {
-        return new HabitacionDTO(this.habitacionRepository.findById(id));
+        Habitacion habitacion = habitacionRepository.findById(id).orElse(null);
+        return habitacion != null ? new HabitacionDTO(habitacion) : null;
     }
 
     public Habitacion findById(int habitacionId) {
-        return habitacionRepository.findById(habitacionId);
+        return habitacionRepository.findById(habitacionId).orElse(null);
     }
 }

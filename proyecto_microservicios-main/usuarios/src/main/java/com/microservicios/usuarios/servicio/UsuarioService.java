@@ -78,6 +78,9 @@ public class UsuarioService {
 
     public UsuarioDTO getByNombreAndContrasena(String nombre, String contrasena) {
         Usuario usuario = userRepository.findByNombreAndContrasena(nombre, contrasena);
+        if (usuario == null) {
+            return null;
+        }
         return new UsuarioDTO(usuario);
     }
 

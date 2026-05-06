@@ -14,7 +14,6 @@ public interface IReservaRepository  extends JpaRepository<Reserva,Integer> {
 
     List<Reserva> findByEstado(String estado);
 
-    Reserva findById(int reserva_id);
 
     @Query("SELECT r FROM Reserva r " +
             "WHERE r.id = :idReserva " +

@@ -50,7 +50,6 @@ public class ReservaController {
     }
 
     /**
-     *
      * @param validarUsuarioDTO
      * @return
      */
