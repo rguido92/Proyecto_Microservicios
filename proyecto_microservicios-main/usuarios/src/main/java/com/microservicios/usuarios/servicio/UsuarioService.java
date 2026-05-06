@@ -49,8 +49,8 @@ public class UsuarioService {
 
     public int findByNombre(String nombre) {
         Usuario usuario = userRepository.findByNombre(nombre);
-        System.out.println(usuario.getUsuario_id());
         if (usuario != null) {
+            System.out.println(usuario.getUsuario_id());
             return usuario.getUsuario_id();
         }
         return 0;
@@ -78,6 +78,14 @@ public class UsuarioService {
 
 
     public UsuarioDTO getByNombreAndContrasena(String nombre, String contrasena) {
+        Usuario usuario = userRepository.findByNombreAndContrasena(nombre, contrasena);
+        if (usuario == null) {
+            return null;
+        }
+        return new UsuarioDTO(usuario);
+    }
+
+    public UsuarioDTO login(String nombre, String contrasena) {
         Usuario usuario = userRepository.findByNombreAndContrasena(nombre, contrasena);
         if (usuario == null) {
             return null;
