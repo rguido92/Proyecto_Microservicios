@@ -1,0 +1,33 @@
+# Maven
+target/
+**/target/
+
+# IDE
+.idea/
+**/.idea/
+*.iml
+.settings/
+**/.settings/
+.project
+.classpath
+**/mvnw
+**/mvnw.cmd
+**/.mvn/
+
+# Eclipse
+bin/
+
+# VS Code
+.vscode/
+**/.vscode/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Env
+.env
+**/.env

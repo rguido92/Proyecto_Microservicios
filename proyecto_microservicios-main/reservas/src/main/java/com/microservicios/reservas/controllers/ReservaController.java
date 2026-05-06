@@ -71,12 +71,12 @@ public class ReservaController {
      * @param validarUsuarioDTO
      * @return
      */
-    @GetMapping("/{estado}")
+    @GetMapping("/estado")
     public ResponseEntity<List<ListarReservasDTO>> listarReservasEstado(@RequestParam String estado, @RequestBody ValidarUsuarioDTO validarUsuarioDTO) {
         if (reservaService.comprobarContrasena(validarUsuarioDTO.getNombre(), validarUsuarioDTO.getContrasena())) {
             List<ListarReservasDTO> reservas = reservaService.findbyEstado(estado);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(reservas);
-        } else return null;
+        } else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(List.of());
     }
 
     @PostMapping("/listar-estado")

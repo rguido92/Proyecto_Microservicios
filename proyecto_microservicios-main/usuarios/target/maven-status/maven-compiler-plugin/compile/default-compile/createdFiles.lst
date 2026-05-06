@@ -1,7 +1,0 @@
-com\microservicios\usuarios\UsuariosApplication.class
-com\microservicios\usuarios\controlador\UsuarioController.class
-com\microservicios\usuarios\dto\UsuarioDTO.class
-com\microservicios\usuarios\entidades\Usuario.class
-com\microservicios\usuarios\repositorio\IUserRepository.class
-com\microservicios\usuarios\servicio\UsuarioService.class
-com\microservicios\usuarios\dto\ActualizarUsuarioDTO.class

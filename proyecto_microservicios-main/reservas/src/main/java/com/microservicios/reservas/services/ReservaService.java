@@ -82,7 +82,7 @@ public class ReservaService {
                 if (reserva != null) {
                     reserva.setEstado(cambioEstadoReservaDTO.getEstado());
                     reservaRepository.save(reserva);
-                    return "Estado de la reserva cambiado" + cambioEstadoReservaDTO.getEstado();
+                    return "Estado de la reserva cambiado " + cambioEstadoReservaDTO.getEstado();
                 } else return "La reserva con ID " + cambioEstadoReservaDTO.getReserva_id() + "no se encontro";
             } catch (Exception e) {
                 return "Error al cambiar el estado de la reserva" + e.getMessage();
@@ -106,7 +106,7 @@ public class ReservaService {
             }
             return listarReservasDTOS;
         }
-        return null;
+        return List.of();
     }
 
     public List<ListarReservasDTO> findbyEstado(String estado) {

@@ -10,15 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 @Repository
-<<<<<<< HEAD
 public interface IHabitacionRepository extends JpaRepository<Habitacion, Integer> {
 
-    @Query("SELECT h FROM Habitacion h WHERE h.hotel.hotel_id = :hotelId")
+    @Query("SELECT h FROM Habitacion h WHERE h.hotel.hotelId = :hotelId")
     List<Habitacion> findByHotelId(@Param("hotelId") int hotelId);
-=======
-public interface IHabitacionRepository extends JpaRepository<Habitacion,Integer> {
-    Habitacion findById(int id);
-    //List<Habitacion> findByHotelId(int hotelId);
->>>>>>> 72c50d549774d482fd399d84e2f638d6707c0704
 }
  

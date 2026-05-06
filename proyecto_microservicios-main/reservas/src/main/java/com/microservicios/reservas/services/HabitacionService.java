@@ -66,13 +66,8 @@ public class HabitacionService {
     public String actualizarHabitacion(CrearHabitacionDTO habitacionDTO) {
         if (comprobarContrasena(habitacionDTO.getNombre(), habitacionDTO.getContraseña())) {
 
-<<<<<<< HEAD
             Habitacion habitacion = habitacionRepository.findById(habitacionDTO.getId()).orElse(null);
-            Hotel hotel = hotelRepository.findById(habitacionDTO.getHotel_id()).orElse(null);
-=======
-            Habitacion habitacion = habitacionRepository.findById(habitacionDTO.getId());
             Hotel hotel = hotelRepository.findById(habitacionDTO.getHotelId()).orElse(null);
->>>>>>> 72c50d549774d482fd399d84e2f638d6707c0704
             if (habitacion != null && hotel!=null) {
                 habitacion.setHotel(hotel);
                 habitacion.setTipo(habitacionDTO.getTipo());

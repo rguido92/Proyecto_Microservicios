@@ -82,17 +82,6 @@ public class UsuarioService {
         if (usuario == null) {
             return null;
         }
-<<<<<<< HEAD
-=======
-        return new UsuarioDTO(usuario);
-    }
-
-    public UsuarioDTO login(String nombre, String contrasena) {
-        Usuario usuario = userRepository.findByNombreAndContrasena(nombre, contrasena);
-        if (usuario == null) {
-            return null;
-        }
->>>>>>> 72c50d549774d482fd399d84e2f638d6707c0704
         return new UsuarioDTO(usuario);
     }
 

@@ -4,6 +4,7 @@ import com.microservicios.reservas.dto.HotelDTO;
 import com.microservicios.reservas.dto.UserpassDTO;
 import com.microservicios.reservas.services.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class HotelController {
         if (hotelService.comprobarContrasena(hotelDTO.getUsuario(),hotelDTO.getContrasena())){
             String mensaje = hotelService.crearHotel(hotelDTO);
             return ResponseEntity.ok(mensaje);
-        }else return ResponseEntity.ok().body("Usuario no valido");
+        }else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no valido");
     }
 
     @GetMapping("")
@@ -35,7 +36,7 @@ public class HotelController {
         if (hotelService.comprobarContrasena(hotelDTO.getUsuario(),hotelDTO.getContrasena())){
             String mensaje = hotelService.actualizarHotel(hotelDTO);
             return ResponseEntity.ok(mensaje);
-        }else return ResponseEntity.ok().body("Usuario no valido");
+        }else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no valido");
 
     }
 
@@ -44,8 +45,10 @@ public class HotelController {
         if (hotelService.comprobarContrasena(userpassDTO.getNombre(),userpassDTO.getContraseña())){
             String mensaje = hotelService.eliminarHotel(id);
             return ResponseEntity.ok(mensaje);
-        }else return ResponseEntity.ok().body("Usuario no valido");
+        }else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no valido");
+
     }
+
 
     @PostMapping("/id")
     public ResponseEntity<Integer> obtenerIdApartirNombre(@RequestParam String nombre, @RequestBody UserpassDTO userpassDTO) {
@@ -61,7 +64,7 @@ public class HotelController {
             if (hotelService.comprobarContrasena(userpassDTO.getNombre(),userpassDTO.getContraseña())){
                 String nombre = hotelService.obtenerNombreAPartirId(id);
                 return ResponseEntity.ok(nombre);
-            }else return ResponseEntity.ok().body("Usuario no valido");
+            }else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no valido");
 
     }
 
