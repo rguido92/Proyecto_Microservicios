@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\rodri\vscode repositories\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\dto\ActualizarUsuarioDTO.java
 C:\Users\rodri\vscode repositories\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\repositorio\IUserRepository.java
 C:\Users\rodri\vscode repositories\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\UsuariosApplication.java
@@ -5,3 +6,12 @@ C:\Users\rodri\vscode repositories\Proyecto_Microservicios\proyecto_microservici
 C:\Users\rodri\vscode repositories\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\controlador\UsuarioController.java
 C:\Users\rodri\vscode repositories\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\servicio\UsuarioService.java
 C:\Users\rodri\vscode repositories\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\dto\UsuarioDTO.java
+=======
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\dto\ActualizarUsuarioDTO.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\servicio\UsuarioService.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\UsuariosApplication.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\controlador\UsuarioController.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\dto\UsuarioDTO.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\entidades\Usuario.java
+C:\Users\rodri\IdeaProjects\Proyecto_Microservicios\proyecto_microservicios-main\usuarios\src\main\java\com\microservicios\usuarios\repositorio\IUserRepository.java
+>>>>>>> 72c50d549774d482fd399d84e2f638d6707c0704

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("reservas/hotel")
 public class HotelController {
@@ -21,6 +23,11 @@ public class HotelController {
             String mensaje = hotelService.crearHotel(hotelDTO);
             return ResponseEntity.ok(mensaje);
         }else return ResponseEntity.ok().body("Usuario no valido");
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<HotelDTO>> listarHoteles() {
+        return ResponseEntity.ok(hotelService.listarHoteles());
     }
 
     @PatchMapping("")

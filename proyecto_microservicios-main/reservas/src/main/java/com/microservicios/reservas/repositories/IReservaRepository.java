@@ -18,6 +18,6 @@ public interface IReservaRepository  extends JpaRepository<Reserva,Integer> {
     @Query("SELECT r FROM Reserva r " +
             "WHERE r.id = :idReserva " +
             "AND r.usuario = :idUsuario " +
-            "AND r.habitacion.hotel.hotel_id = :idHotel")
+            "AND r.habitacion.hotel.hotelId = :idHotel")
     Reserva findcheckReserva(@Param("idUsuario") int idUsuario,@Param("idHotel") int idHotel,@Param("idReserva") int idReserva );
 }

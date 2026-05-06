@@ -16,6 +16,7 @@ public class ActualizarUsuarioDTO {
     private String correo_electronico;
     private String direccion;
     private String contrasena;
+    private String rol;
 
     public ActualizarUsuarioDTO(Usuario usuario1) {
         this.id= usuario1.getUsuario_id();
@@ -23,5 +24,6 @@ public class ActualizarUsuarioDTO {
         this.correo_electronico=usuario1.getCorreo_electronico();
         this.direccion= usuario1.getDireccion();
         this.contrasena= usuario1.getContrasena();
+        this.rol = usuario1.getRol();
     }
 }

@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "habitacion")
+@Table(name = "habitaciones")
 public class Habitacion {
 
     @Id

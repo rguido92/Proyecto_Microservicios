@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class ListarComentariosHotelDTO {
+    private String id;
     private String nombre;
     private String contrasena;
     private Integer idHotel;
@@ -32,6 +33,7 @@ public class ListarComentariosHotelDTO {
     }
 
     public ListarComentariosHotelDTO(Comentario comentarios) {
+        setId(comentarios.getId());
         setIdHotel(comentarios.getHotelId());
         setReservaId(comentarios.getReservaId());
         setPuntuacion(comentarios.getPuntuacion());

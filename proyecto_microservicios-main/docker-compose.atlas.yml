@@ -1,0 +1,106 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: microservicios-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql/init-microservices.sql:/docker-entrypoint-initdb.d/init-microservices.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-pabc123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  eureka-server:
+    build:
+      context: ./eurekaServer
+    container_name: microservicios-eureka
+    environment:
+      EUREKA_HOST: eureka-server
+    ports:
+      - "8700:8700"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  usuarios:
+    build:
+      context: ./usuarios
+    container_name: microservicios-usuarios
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: abc123
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8700
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+
+  reservas:
+    build:
+      context: ./reservas
+    container_name: microservicios-reservas
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: abc123
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8700
+      USUARIOS_SERVICE_URL: http://usuarios:8702
+    depends_on:
+      mysql:
+        condition: service_healthy
+      usuarios:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+
+  comentarios:
+    build:
+      context: ./comentarios
+    container_name: microservicios-comentarios
+    environment:
+      MONGODB_URI: ${ATLAS_MONGODB_URI}
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8700
+      USUARIOS_SERVICE_URL: http://usuarios:8702
+      RESERVAS_SERVICE_URL: http://reservas:8701
+    depends_on:
+      usuarios:
+        condition: service_started
+      reservas:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+
+  apigateaway:
+    build:
+      context: ./apigateaway
+    container_name: microservicios-gateway
+    environment:
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8700
+    ports:
+      - "8080:8080"
+    depends_on:
+      comentarios:
+        condition: service_started
+      reservas:
+        condition: service_started
+      usuarios:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+
+volumes:
+  mysql_data:

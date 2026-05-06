@@ -59,6 +59,12 @@ public class ReservaController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(reservas);
     }
 
+    @PostMapping("/listar-usuario")
+    public ResponseEntity<List<ListarReservasDTO>> listarReservasUsuarioPost(@RequestBody ValidarUsuarioDTO validarUsuarioDTO) {
+        List<ListarReservasDTO> reservas = reservaService.listarReserva(validarUsuarioDTO);
+        return ResponseEntity.ok(reservas);
+    }
+
     /**
      * http://localhost:8701/reservas/estado?estado=Pendiente
      * @param estado
@@ -71,6 +77,14 @@ public class ReservaController {
             List<ListarReservasDTO> reservas = reservaService.findbyEstado(estado);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(reservas);
         } else return null;
+    }
+
+    @PostMapping("/listar-estado")
+    public ResponseEntity<List<ListarReservasDTO>> listarReservasEstadoPost(@RequestParam String estado, @RequestBody ValidarUsuarioDTO validarUsuarioDTO) {
+        if (reservaService.comprobarContrasena(validarUsuarioDTO.getNombre(), validarUsuarioDTO.getContrasena())) {
+            return ResponseEntity.ok(reservaService.findbyEstado(estado));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of());
     }
 
     /**

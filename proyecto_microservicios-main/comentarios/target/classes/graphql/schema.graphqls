@@ -27,6 +27,10 @@ input MostrarComentarioReservaDTO {
     reservaId: Int
 }
 type ListarComentariosHotel {
+<<<<<<< HEAD
+=======
+    id: String,
+>>>>>>> 72c50d549774d482fd399d84e2f638d6707c0704
     nombreHotel: String,
     reservaId: Int,
     puntuacion: Float,
@@ -46,7 +50,11 @@ type Comentarios {
     _id: String
     usuarioId: Int
     hotelId: Int
+<<<<<<< HEAD
     reservaId: Int
+=======
+    reservaId: Float
+>>>>>>> 72c50d549774d482fd399d84e2f638d6707c0704
     comentario: String
     fechaCreacion: String
 }
@@ -56,7 +64,11 @@ input CrearComentarioInput {
     contrasena: String!
     reservaId: Int!
     comentario: String!
+<<<<<<< HEAD
     puntuacion: Float!
+=======
+    puntuacion: Int!
+>>>>>>> 72c50d549774d482fd399d84e2f638d6707c0704
 }
 input EliminarComentarioDTO {
     nombre: String,

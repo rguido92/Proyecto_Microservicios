@@ -7,6 +7,7 @@ import com.microservicios.reservas.models.Hotel;
 import com.microservicios.reservas.repositories.IHabitacionRepository;
 import com.microservicios.reservas.repositories.IHotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,13 +20,16 @@ import java.util.Optional;
 
 @Service
 public class HotelService {
+    @Value("${usuarios.service.url:http://localhost:8702}")
+    private String usuariosServiceUrl;
+
     @Autowired
     private IHotelRepository hotelRepository;
     @Autowired
     private IHabitacionRepository habitacionRepository;
     public boolean comprobarContrasena(String nombre, String contrasena) {
         RestTemplate restTemplate = new RestTemplate();
-        String urlValidarContrasena = "http://localhost:8702/usuarios/validar";
+        String urlValidarContrasena = usuariosServiceUrl + "/usuarios/validar";
 
         CrearReservaDTO crearReservaDTO = new CrearReservaDTO();
         crearReservaDTO.setNombre(nombre);
@@ -55,7 +59,7 @@ public class HotelService {
 
     public String actualizarHotel(HotelDTO hotelDTO) {
         try {
-            Hotel hotel = hotelRepository.findById(hotelDTO.getHotel_id()).orElse(null);
+            Hotel hotel = hotelRepository.findById(hotelDTO.getHotelId()).orElse(null);
             if (hotel != null) {
                 hotel.setNombre(hotelDTO.getNombre());
                 hotel.setDireccion(hotelDTO.getDireccion());
@@ -87,7 +91,7 @@ public class HotelService {
         try {
             Hotel hotel = hotelRepository.findByNombre(nombre);
             if (hotel != null) {
-                return  hotel.getHotel_id();
+                return  hotel.getHotelId();
             }
         } catch (Exception e) {
         }
@@ -105,6 +109,10 @@ public class HotelService {
         } catch (Exception e) {
             return "Error al obtener el nombre del hotel a partir del ID: " + e.getMessage();
         }
+    }
+
+    public List<HotelDTO> listarHoteles() {
+        return hotelRepository.findAll().stream().map(HotelDTO::new).toList();
     }
 
 }
