@@ -4,8 +4,9 @@ services:
     container_name: microservicios-mysql
     environment:
       MYSQL_ROOT_PASSWORD: abc123
+    mem_limit: 2g
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./sql/init-microservices.sql:/docker-entrypoint-initdb.d/init-microservices.sql:ro
@@ -19,6 +20,7 @@ services:
   mongodb:
     image: mongo:7.0
     container_name: microservicios-mongodb
+    mem_limit: 1g
     ports:
       - "27017:27017"
     volumes:
@@ -34,6 +36,7 @@ services:
     build:
       context: ./eurekaServer
     container_name: microservicios-eureka
+    mem_limit: 512m
     environment:
       EUREKA_HOST: eureka-server
     ports:
@@ -48,6 +51,7 @@ services:
     build:
       context: ./usuarios
     container_name: microservicios-usuarios
+    mem_limit: 512m
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -67,6 +71,7 @@ services:
     build:
       context: ./reservas
     container_name: microservicios-reservas
+    mem_limit: 512m
     environment:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -89,6 +94,7 @@ services:
     build:
       context: ./comentarios
     container_name: microservicios-comentarios
+    mem_limit: 512m
     environment:
       MONGO_HOST: mongodb
       MONGO_PORT: 27017
@@ -112,6 +118,7 @@ services:
     build:
       context: ./apigateaway
     container_name: microservicios-gateway
+    mem_limit: 512m
     environment:
       EUREKA_HOST: eureka-server
       EUREKA_PORT: 8700

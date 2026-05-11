@@ -5,16 +5,18 @@ USE usuariosproyecto;
 
 CREATE TABLE IF NOT EXISTS usuario (
     usuario_id INT NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(10) NOT NULL,
+    contrasena VARCHAR(100) NOT NULL,
     correo_electronico VARCHAR(80) NOT NULL,
     direccion VARCHAR(80) NOT NULL,
-    contrasena VARCHAR(100) NOT NULL,
+    nombre VARCHAR(10) NOT NULL,
+    fecha_registro DATE,
     rol VARCHAR(20) NOT NULL DEFAULT 'USER',
+    telefono VARCHAR(20),
     PRIMARY KEY (usuario_id)
 );
 
-INSERT INTO usuario (nombre, correo_electronico, direccion, contrasena, rol)
-SELECT 'admin', 'admin@micro.local', 'Panel central', 'admin123', 'ADMIN'
+INSERT INTO usuario (contrasena, correo_electronico, direccion, nombre, fecha_registro, rol, telefono)
+SELECT 'admin123', 'admin@micro.local', 'Panel central', 'admin', CURDATE(), 'ADMIN', '600000000'
 WHERE NOT EXISTS (
     SELECT 1 FROM usuario WHERE nombre = 'admin'
 );
@@ -42,11 +44,11 @@ CREATE TABLE IF NOT EXISTS habitaciones (
 
 CREATE TABLE IF NOT EXISTS reserva (
     reserva_id INT NOT NULL AUTO_INCREMENT,
+    estado VARCHAR(255) NOT NULL,
+    fecha_fin DATE NOT NULL,
+    fecha_inicio DATE NOT NULL,
     usuario_id INT NOT NULL,
     habitacion_id INT NOT NULL,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    estado VARCHAR(255) NOT NULL,
     PRIMARY KEY (reserva_id),
     CONSTRAINT fk_reserva_habitacion
         FOREIGN KEY (habitacion_id) REFERENCES habitaciones (habitacion_id)
